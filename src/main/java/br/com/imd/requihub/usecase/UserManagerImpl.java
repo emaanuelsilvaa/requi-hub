@@ -4,6 +4,7 @@ import br.com.imd.requihub.model.UserModel;
 import br.com.imd.requihub.repository.UserRepository;
 import br.com.imd.requihub.usecase.interfaces.IUserManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,6 @@ public class UserManagerImpl implements IUserManager, UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -35,9 +35,6 @@ public class UserManagerImpl implements IUserManager, UserDetailsService {
         if(userExists)
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Email already registered");
-
-        String encodedPassword = bCryptPasswordEncoder.encode(userModel.getPassword());
-        userModel.setPassword(encodedPassword);
 
         return Optional.of(userRepository.save(userModel));
     }

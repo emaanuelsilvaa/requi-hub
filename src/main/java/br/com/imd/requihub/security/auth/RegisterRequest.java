@@ -1,4 +1,4 @@
-package br.com.imd.requihub.security;
+package br.com.imd.requihub.security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

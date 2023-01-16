@@ -1,4 +1,4 @@
-package br.com.imd.requihub.security;
+package br.com.imd.requihub.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,8 +1,5 @@
-package br.com.imd.requihub.controller;
+package br.com.imd.requihub.security.auth;
 
-import br.com.imd.requihub.security.AuthenticationResponse;
-import br.com.imd.requihub.security.AuthenticationService;
-import br.com.imd.requihub.security.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

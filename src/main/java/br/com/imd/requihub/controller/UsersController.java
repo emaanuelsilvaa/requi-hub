@@ -32,11 +32,6 @@ public class UsersController {
         return userManagerImpl.getUserByEmail(email);
     }
 
-    @PostMapping("/create")
-    public UserModel createUser(@RequestBody UserModel userModel){
-        return userManagerImpl.registerUser(userModel).get();
-    }
-
     @PutMapping("/update")
     public UserModel updateUser(@RequestBody UserModel currentUserModel){
         return userManagerImpl.updateUser(currentUserModel).get();

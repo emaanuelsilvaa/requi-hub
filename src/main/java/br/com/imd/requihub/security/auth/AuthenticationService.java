@@ -1,7 +1,9 @@
-package br.com.imd.requihub.security;
+package br.com.imd.requihub.security.auth;
 
 import br.com.imd.requihub.model.UserModel;
 import br.com.imd.requihub.repository.UserRepository;
+import br.com.imd.requihub.security.config.JwtService;
+import br.com.imd.requihub.security.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;

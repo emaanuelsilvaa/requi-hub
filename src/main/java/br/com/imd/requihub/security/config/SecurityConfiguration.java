@@ -1,5 +1,6 @@
-package br.com.imd.requihub.security;
+package br.com.imd.requihub.security.config;
 
+import br.com.imd.requihub.security.config.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

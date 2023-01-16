@@ -1,4 +1,4 @@
-package br.com.imd.requihub.security;
+package br.com.imd.requihub.security.config;
 
 import br.com.imd.requihub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
