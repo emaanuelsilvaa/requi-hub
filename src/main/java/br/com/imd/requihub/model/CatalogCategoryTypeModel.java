@@ -1,5 +1,6 @@
 package br.com.imd.requihub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class CatalogCategoryTypeModel {
     String type;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryType", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<CatalogModel> catalogModel;
 }

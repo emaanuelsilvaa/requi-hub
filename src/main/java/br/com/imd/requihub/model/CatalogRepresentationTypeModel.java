@@ -1,5 +1,6 @@
 package br.com.imd.requihub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class CatalogRepresentationTypeModel {
     private String type;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "representationTypeModel", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<CatalogModel> catalogModels;
 }

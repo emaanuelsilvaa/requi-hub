@@ -1,19 +1,14 @@
 package br.com.imd.requihub.controller;
 
 
-import br.com.imd.requihub.dtos.DtoTest;
 import br.com.imd.requihub.model.CatalogModel;
-import br.com.imd.requihub.usecase.CatalogImpl;
+import br.com.imd.requihub.usecase.CatalogManagerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("api/v1/catalog")
@@ -21,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CatalogController {
 
-    private final CatalogImpl catalog;
+    private final CatalogManagerImpl catalog;
 
     @GetMapping
     public ResponseEntity<Page<CatalogModel>> getAllCatalogs(Pageable pageable){

@@ -33,6 +33,7 @@ public class UserModel implements UserDetails {
     @Column
     private String email;
     @Column
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)

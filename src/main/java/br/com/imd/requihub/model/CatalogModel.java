@@ -1,6 +1,7 @@
 package br.com.imd.requihub.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,7 @@ public class CatalogModel {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    @OneToOne(fetch = FetchType.LAZY )
+    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY )
     @JoinColumn(name = "attachment_id", referencedColumnName = "ID")
     private AttachmentModel attachmentModel;
 

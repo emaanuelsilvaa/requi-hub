@@ -1,5 +1,7 @@
 package br.com.imd.requihub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +25,11 @@ public class AttachmentModel {
 
     private String fileType;
 
-    private String fileSize;
+    private long fileSize;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "attachmentModel", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CatalogModel catalogModel;
 
 }

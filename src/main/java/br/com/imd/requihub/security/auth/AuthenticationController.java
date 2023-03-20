@@ -18,6 +18,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<AuthenticationResponse> register(
         @RequestBody RegisterRequest request
     ){
@@ -25,6 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody RegisterRequest request
     ){
