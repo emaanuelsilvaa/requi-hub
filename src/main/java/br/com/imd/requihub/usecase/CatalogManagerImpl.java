@@ -35,6 +35,8 @@ public class CatalogManagerImpl implements ICatalog {
     @Override
     public Optional<CatalogModel> createNewCatalog(CatalogModel catalogModel) {
 
+        // validate information
+
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         final Optional<UserModel> author = userRepository.findByEmail(email);
@@ -56,7 +58,8 @@ public class CatalogManagerImpl implements ICatalog {
 
         if(author.isPresent()){
             catalogModel.setAuthor(author.get());
-            return Optional.of(catalogRepository.save(catalogModel));
+            //return Optional.of(catalogRepository.save(catalogModel));
+            return null;
         }
         else
             throw new ResponseStatusException(
@@ -82,5 +85,10 @@ public class CatalogManagerImpl implements ICatalog {
     @Override
     public Page<CatalogModel> getCatalogsByAuthor(String author) {
         return new PageImpl<>(catalogRepository.findAllByAuthor(author));
+    }
+
+    @Override
+    public Optional<CatalogModel> findCatalogById(Long id) {
+        return catalogRepository.findById(id);
     }
 }

@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RequestMapping("api/v1/catalog")
+
 @RestController
+@RequestMapping("api/v1/catalog")
 @RequiredArgsConstructor
 public class CatalogController {
 
@@ -23,9 +24,10 @@ public class CatalogController {
         return ResponseEntity.ok(this.catalog.getAllCatalogs(pageable));
     }
     @PostMapping("/create")
-    public Optional<CatalogModel> createCatalog(@RequestBody CatalogModel catalogModel){
-
-        return this.catalog.createNewCatalog(catalogModel);
+    public ResponseEntity<Optional<CatalogModel>> createCatalog(@RequestBody CatalogModel catalogModel){
+        ;
+        return ResponseEntity.ok(catalog.findCatalogById(new Long(16)));
+        //return ResponseEntity.ok(this.catalog.createNewCatalog(catalogModel));
     }
 
     @PutMapping("/update")
@@ -39,9 +41,27 @@ public class CatalogController {
         return Optional.of(catalogModel);
     }
 
+    @GetMapping("/find/id/{id}")
+    public ResponseEntity<Optional<CatalogModel>> findCatalogById(@PathVariable Long id){
+        return ResponseEntity.ok( catalog.findCatalogById(id) );
+    }
+
     @GetMapping("/find/{author}")
     public ResponseEntity<Page<CatalogModel>> findCatalogByAuthor(@PathVariable String author){
         return ResponseEntity.ok(this.catalog.getCatalogsByAuthor(author));
     }
+
+    @GetMapping("/find/{representationType}")
+    public ResponseEntity<Page<CatalogModel>> findCatalogByRepresentationType(@PathVariable String representationType){
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/find/{categoryType}")
+    public ResponseEntity<Page<CatalogModel>> findCatalogByCategoryType(@PathVariable String categoryType){
+        return ResponseEntity.ok(null);
+    }
+
+
+
 
 }
