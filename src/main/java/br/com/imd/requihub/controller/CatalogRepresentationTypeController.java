@@ -18,7 +18,7 @@ public class CatalogRepresentationTypeController {
 
     private final CatalogRepresentationTypeImpl catalogRepresentationType;
 
-    @GetMapping
+    @GetMapping("/representations")
     public ResponseEntity<Page<CatalogRepresentationTypeModel>> getAllCatalogs(Pageable pageable){
         return ResponseEntity.ok(this.catalogRepresentationType.getAllCatalogsRepresentationTypes(pageable));
     }

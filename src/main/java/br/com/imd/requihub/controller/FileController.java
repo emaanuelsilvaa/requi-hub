@@ -1,5 +1,7 @@
 package br.com.imd.requihub.controller;
 
+import br.com.imd.requihub.model.AttachmentModel;
+import br.com.imd.requihub.usecase.CatalogManagerImpl;
 import br.com.imd.requihub.usecase.UploadDownloadImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -22,7 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/file")
 public class FileController {
-    private static final String path = "/home/user/Desktop/files/";
+    private static final String path = "C:/CatalogFiles/";
+    private final CatalogManagerImpl catalogManager;
 
     private final UploadDownloadImpl uploadDownload;
     @PostMapping("/upload")
@@ -35,15 +38,15 @@ public class FileController {
 
     }
 
-    @GetMapping(path = "/download/{name}")
-    public ResponseEntity<Resource> download(@PathVariable("name") String name) throws IOException {
-
-        File file = new File(path + name);
+    @GetMapping(path = "/download/{catalogId}")
+    public ResponseEntity<Resource> download(@PathVariable("catalogId") Long catalogId) throws IOException {
+        final AttachmentModel attachmentModel = catalogManager.findCatalogById(catalogId).get().getAttachmentModel();
+        File file = new File(attachmentModel.getAttachmentLink());
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
-        return ResponseEntity.ok().headers(this.headers(name)).contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream")).body(resource);
+        return ResponseEntity.ok().headers(this.headers(file.getName())).contentLength(file.length())
+                .contentType(MediaType.parseMediaType(attachmentModel.getFileType())).body(resource);
     }
 
     private HttpHeaders headers(String name) {
