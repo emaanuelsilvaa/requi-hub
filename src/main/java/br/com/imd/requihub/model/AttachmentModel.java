@@ -2,12 +2,11 @@ package br.com.imd.requihub.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 @Getter
 @Setter
@@ -15,19 +14,23 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "T_ATTACHMENT")
-public class AttachmentModel {
+public class AttachmentModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "attachment_link", length = 1024)
     private String attachmentLink;
+
+    @Column(name = "thumbnail_link", length = 1024)
+    private String thumbnailLink;
 
     private String fileType;
 
     private long fileSize;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "attachmentModel", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "attachment", cascade = CascadeType.ALL)
     @JsonIgnore
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CatalogModel catalogModel;

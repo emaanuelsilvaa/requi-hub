@@ -40,7 +40,7 @@ public class FileController {
 
     @GetMapping(path = "/download/{catalogId}")
     public ResponseEntity<Resource> download(@PathVariable("catalogId") Long catalogId) throws IOException {
-        final AttachmentModel attachmentModel = catalogManager.findCatalogById(catalogId).get().getAttachmentModel();
+        final AttachmentModel attachmentModel = catalogManager.findCatalogById(catalogId).get().getAttachment();
         File file = new File(attachmentModel.getAttachmentLink());
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));

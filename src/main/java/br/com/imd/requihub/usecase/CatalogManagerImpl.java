@@ -1,9 +1,6 @@
 package br.com.imd.requihub.usecase;
 
-import br.com.imd.requihub.model.CatalogCategoryTypeModel;
-import br.com.imd.requihub.model.CatalogModel;
-import br.com.imd.requihub.model.CatalogRepresentationTypeModel;
-import br.com.imd.requihub.model.UserModel;
+import br.com.imd.requihub.model.*;
 import br.com.imd.requihub.repository.*;
 import br.com.imd.requihub.usecase.interfaces.ICatalog;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +43,9 @@ public class CatalogManagerImpl implements ICatalog {
         final Optional<CatalogCategoryTypeModel> categoryTypeModel = catalogCategoryTypeRepository.findByType(catalogModel.getCategoryType().getType());
         /* find representation type */
         final Optional<CatalogRepresentationTypeModel> representationTypeModel = catalogRepresentationTypeRepository.findByType(catalogModel.getRepresentationTypeModel().getType());
+
+        /* Initial Attachment*/
+        catalogModel.setAttachment(catalogModel.getAttachment());
         /* find tags */
         catalogModel.setCategoryType(categoryTypeModel.get());
 
@@ -58,8 +59,7 @@ public class CatalogManagerImpl implements ICatalog {
 
         if(author.isPresent()){
             catalogModel.setAuthor(author.get());
-            //return Optional.of(catalogRepository.save(catalogModel));
-            return null;
+            return Optional.of(catalogRepository.save(catalogModel));
         }
         else
             throw new ResponseStatusException(
@@ -83,8 +83,8 @@ public class CatalogManagerImpl implements ICatalog {
     }
 
     @Override
-    public Page<CatalogModel> getCatalogsByAuthor(String author) {
-        return new PageImpl<>(catalogRepository.findAllByAuthor(author));
+    public Page<CatalogModel> getCatalogsByAuthor(Long author) {
+        return new PageImpl<>(catalogRepository.findAllByAuthorId(author));
     }
 
     @Override

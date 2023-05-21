@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ICatalog {
     Optional<CatalogModel> createNewCatalog(final CatalogModel catalogModel);
@@ -15,7 +16,7 @@ public interface ICatalog {
 
     Page<CatalogModel> getAllCatalogs(Pageable pageable);
 
-    Page<CatalogModel> getCatalogsByAuthor(final String author);
+    Page<CatalogModel> getCatalogsByAuthor(final Long author);
 
     Optional<CatalogModel> findCatalogById(final Long id);
 }

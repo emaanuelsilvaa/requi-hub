@@ -50,6 +50,7 @@ public class AuthenticationService {
             String jwtToken = jwtService.generateToken(usermod.get());
             return AuthenticationResponse.builder()
                     .token(jwtToken)
+                    .email(request.getEmail())
                     .build();
         }else
         throw new ResponseStatusException(

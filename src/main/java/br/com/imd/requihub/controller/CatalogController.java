@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
 @RestController
@@ -25,9 +26,9 @@ public class CatalogController {
     }
     @PostMapping("/create")
     public ResponseEntity<Optional<CatalogModel>> createCatalog(@RequestBody CatalogModel catalogModel){
-        ;
-        return ResponseEntity.ok(catalog.findCatalogById(new Long(16)));
-        //return ResponseEntity.ok(this.catalog.createNewCatalog(catalogModel));
+
+        //return ResponseEntity.ok(catalog.findCatalogById(new Long(16)));
+        return ResponseEntity.ok(this.catalog.createNewCatalog(catalogModel));
     }
 
     @PutMapping("/update")
@@ -46,8 +47,8 @@ public class CatalogController {
         return ResponseEntity.ok( catalog.findCatalogById(id) );
     }
 
-    @GetMapping("/find/{author}")
-    public ResponseEntity<Page<CatalogModel>> findCatalogByAuthor(@PathVariable String author){
+    @GetMapping("/find/by/author")
+    public ResponseEntity<Page<CatalogModel>> findCatalogByAuthor(@RequestParam(value = "id", required = false) Long author){
         return ResponseEntity.ok(this.catalog.getCatalogsByAuthor(author));
     }
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "T_CATALOG")
-public class CatalogModel {
+public class CatalogModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,9 +40,9 @@ public class CatalogModel {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY )
+    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER )
     @JoinColumn(name = "attachment_id", referencedColumnName = "ID")
-    private AttachmentModel attachmentModel;
+    private AttachmentModel attachment;
 
     @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
