@@ -1,6 +1,7 @@
 package br.com.imd.requihub.controller;
 
 import br.com.imd.requihub.model.AttachmentModel;
+import br.com.imd.requihub.repository.CatalogRepository;
 import br.com.imd.requihub.usecase.CatalogManagerImpl;
 import br.com.imd.requihub.usecase.UploadDownloadImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.List;
 public class FileController {
     private static final String path = "C:/CatalogFiles/";
     private final CatalogManagerImpl catalogManager;
+    private final CatalogRepository catalogRepository;
 
     private final UploadDownloadImpl uploadDownload;
     @PostMapping("/upload")
@@ -40,7 +42,7 @@ public class FileController {
 
     @GetMapping(path = "/download/{catalogId}")
     public ResponseEntity<Resource> download(@PathVariable("catalogId") Long catalogId) throws IOException {
-        final AttachmentModel attachmentModel = catalogManager.findCatalogById(catalogId).get().getAttachment();
+        final AttachmentModel attachmentModel = catalogRepository.findById(catalogId).get().getAttachment();
         File file = new File(attachmentModel.getAttachmentLink());
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));

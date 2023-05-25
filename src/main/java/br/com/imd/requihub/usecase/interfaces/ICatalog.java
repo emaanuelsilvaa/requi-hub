@@ -1,5 +1,6 @@
 package br.com.imd.requihub.usecase.interfaces;
 
+import br.com.imd.requihub.entity.Catalog;
 import br.com.imd.requihub.model.CatalogModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,5 +19,5 @@ public interface ICatalog {
 
     Page<CatalogModel> getCatalogsByAuthor(final Long author);
 
-    Optional<CatalogModel> findCatalogById(final Long id);
+    Optional<Catalog> findCatalogById(final Long id);
 }

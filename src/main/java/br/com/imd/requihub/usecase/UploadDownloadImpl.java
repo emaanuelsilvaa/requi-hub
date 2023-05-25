@@ -1,6 +1,7 @@
 package br.com.imd.requihub.usecase;
 
 import br.com.imd.requihub.model.CatalogModel;
+import br.com.imd.requihub.repository.CatalogRepository;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,8 @@ public class UploadDownloadImpl {
 
     private final CatalogManagerImpl catalogManager;
 
+    private CatalogRepository catalogRepository;
+
     public List<String> uploadFile(MultipartFile file, String id) throws Exception {
         String realPathtoUploads = path + "/"+ id+"/file/";
         String realPathToThumbnails = path + "/"+id+"/thumbnail/";
@@ -54,7 +57,7 @@ public class UploadDownloadImpl {
             String filePath = realPathtoUploads + orgName;
             File pdfFile = new File(filePath);
             file.transferTo(pdfFile);
-            Optional<CatalogModel> catalogModel = catalogManager.findCatalogById(new Long(id));
+            Optional<CatalogModel> catalogModel = catalogRepository.findById(new Long(id));
 
             catalogModel.get().getAttachment().setAttachmentLink(pdfFile.getAbsolutePath());
 

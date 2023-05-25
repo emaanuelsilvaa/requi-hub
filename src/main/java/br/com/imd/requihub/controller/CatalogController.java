@@ -1,6 +1,7 @@
 package br.com.imd.requihub.controller;
 
 
+import br.com.imd.requihub.entity.Catalog;
 import br.com.imd.requihub.model.CatalogModel;
 import br.com.imd.requihub.usecase.CatalogManagerImpl;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class CatalogController {
     }
 
     @GetMapping("/find/id/{id}")
-    public ResponseEntity<Optional<CatalogModel>> findCatalogById(@PathVariable Long id){
+    public ResponseEntity<Optional<Catalog>> findCatalogById(@PathVariable Long id){
         return ResponseEntity.ok( catalog.findCatalogById(id) );
     }
 
