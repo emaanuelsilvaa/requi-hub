@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -94,6 +95,7 @@ public class CatalogManagerImpl implements ICatalog {
         return catalogRepository.findAll(pageable);
     }
 
+
     @Override
     public Page<CatalogModel> getCatalogsByAuthor(Long author) {
         final List<CatalogModel> catalogModels = catalogRepository.findAllByAuthorId(author);
@@ -110,7 +112,7 @@ public class CatalogManagerImpl implements ICatalog {
             final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
             catalogModel.getAttachment().setThumbnailLink(thumbBase64);
         });
-        return new PageImpl<>(catalogRepository.findAllByAuthorId(author));
+        return new PageImpl<>(catalogModels);
     }
 
     @Override

@@ -42,7 +42,11 @@ public class UserManagerImpl implements IUserManager, UserDetailsService {
     @Override
     public Optional<UserModel> updateUser(UserModel userModel) {
         Optional<UserModel> currentUser = userRepository.findById(userModel.getId());
-        return Optional.of(userRepository.save(userModel));
+        currentUser.get().setAbout(userModel.getAbout());
+        currentUser.get().setFirstName(userModel.getFirstName());
+        currentUser.get().setLastName(userModel.getLastName());
+        currentUser.get().setProfilePhoto(userModel.getProfilePhoto());
+        return Optional.of(userRepository.save(currentUser.get()));
     }
 
     @Override

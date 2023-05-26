@@ -23,7 +23,7 @@ public class AttachmentModel implements Serializable {
     @Column(name = "attachment_link", length = 1024)
     private String attachmentLink;
 
-    @Column(name = "thumbnail_link", length = 1024)
+    @Column(name = "thumbnail_link")
     private String thumbnailLink;
 
     private String fileType;

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class AuthenticationService {
                 .token(jwttoken)
                 .build();
     }
-
+    @Transactional
     public AuthenticationResponse authenticate(RegisterRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -51,6 +52,7 @@ public class AuthenticationService {
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .email(request.getEmail())
+                    .userId(usermod.get().getId().toString())
                     .build();
         }else
         throw new ResponseStatusException(

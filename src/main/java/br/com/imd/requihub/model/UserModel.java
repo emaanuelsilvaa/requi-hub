@@ -3,6 +3,7 @@ package br.com.imd.requihub.model;
 import br.com.imd.requihub.security.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,8 @@ public class UserModel implements UserDetails {
     private String about;
     @Column
     private String email;
+    @Column
+    private String profilePhoto;
     @Column
     @JsonIgnore
     private String password;

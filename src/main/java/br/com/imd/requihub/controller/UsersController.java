@@ -27,8 +27,8 @@ public class UsersController {
         return ResponseEntity.ok(userManagerImpl.getAllUsers(pageable));
     }
 
-    @GetMapping("email/{email}")
-    public Optional<UserModel> getUser(@PathVariable(value = "email") String email){
+    @GetMapping("/email")
+    public Optional<UserModel> getUser(@RequestParam(value = "email", required = false) String email){
         return userManagerImpl.getUserByEmail(email);
     }
 
