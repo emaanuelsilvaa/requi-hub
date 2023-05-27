@@ -13,7 +13,7 @@ public interface ICatalog {
 
     Optional<CatalogModel> updateCatalog(final CatalogModel catalogModel);
 
-    Optional<CatalogModel> deleteCatalog(final CatalogModel catalogModel);
+    Optional<CatalogModel> deleteCatalog(final Long id);
 
     Page<CatalogModel> getAllCatalogs(Pageable pageable);
 

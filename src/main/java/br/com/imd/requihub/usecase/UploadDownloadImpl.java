@@ -35,7 +35,7 @@ public class UploadDownloadImpl {
 
     private final CatalogManagerImpl catalogManager;
 
-    private CatalogRepository catalogRepository;
+    private final CatalogRepository catalogRepository;
 
     public List<String> uploadFile(MultipartFile file, String id) throws Exception {
         String realPathtoUploads = path + "/"+ id+"/file/";

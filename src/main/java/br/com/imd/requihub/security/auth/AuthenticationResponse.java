@@ -14,4 +14,5 @@ public class AuthenticationResponse {
     private String token;
     private String email;
     private String userId;
+    private String profilePhoto;
 }

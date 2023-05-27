@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,7 +24,8 @@ public class CatalogRepresentationTypeModel {
 
     private String type;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "representationTypeModel", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "representationTypeModel", cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JsonIgnore
     private Set<CatalogModel> catalogModels;
 }

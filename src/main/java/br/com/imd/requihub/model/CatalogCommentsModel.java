@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -30,7 +32,8 @@ public class CatalogCommentsModel {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private UserModel author;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "catalogModel_id", referencedColumnName = "ID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CatalogModel catalogModel;
 }

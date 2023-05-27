@@ -21,13 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.*;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +37,8 @@ public class CatalogManagerImpl implements ICatalog {
     private final CatalogSubjectTagsRepository catalogSubjectTagsRepository;
 
     private final CatalogCategoryTypeRepository catalogCategoryTypeRepository;
+
+    private static final String catalogPath = "C:/CatalogFiles";
 
     @Override
     public Optional<CatalogModel> createNewCatalog(CatalogModel catalogModel) {
@@ -84,10 +81,42 @@ public class CatalogManagerImpl implements ICatalog {
         return Optional.of(catalogRepository.save(catalogModel));
     }
 
+    @Transactional
     @Override
-    public Optional<CatalogModel> deleteCatalog(CatalogModel catalogModel) {
-        catalogRepository.delete(catalogModel);
-        return Optional.of(catalogModel);
+    public Optional<CatalogModel> deleteCatalog(Long catalogId) {
+
+
+        File thumbnailFile = new File(catalogRepository.findById(catalogId).get().getAttachment().getThumbnailLink());
+
+        File file = new File(catalogRepository.findById(catalogId).get().getAttachment().getAttachmentLink());
+
+        if(thumbnailFile.delete() && file.delete()) {
+            if (catalogRepository.existsById(catalogId)) {
+                catalogRepository.deleteAllById(Collections.singleton(catalogId));
+
+            }
+           else{
+                throw new ResponseStatusException(
+                        HttpStatus.UNPROCESSABLE_ENTITY, "Error on delete catalog");
+            }
+            File pathCatalogID = new File(catalogPath+"/"+ catalogId);
+            if(!pathCatalogID.exists()){
+
+                System.out.println("Directory does not exist.");
+            }else{
+                try{
+                    delete(pathCatalogID);
+                }catch(IOException e){
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+            }
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Error on delete catalog");
+        }
+        return  null;
     }
 
     @Override
@@ -164,5 +193,45 @@ public class CatalogManagerImpl implements ICatalog {
 
         }
         return Optional.of(Catalog.builder().build());
+    }
+
+    public static void delete(File file)
+            throws IOException{
+
+        if(file.isDirectory()){
+
+            //directory is empty, then delete it
+            if(file.list().length==0){
+
+                file.delete();
+                System.out.println("Directory is deleted : "
+                        + file.getAbsolutePath());
+
+            }else{
+
+                //list all the directory contents
+                String files[] = file.list();
+
+                for (String temp : files) {
+                    //construct the file structure
+                    File fileDelete = new File(file, temp);
+
+                    //recursive delete
+                    delete(fileDelete);
+                }
+
+                //check the directory again, if empty then delete it
+                if(file.list().length==0){
+                    file.delete();
+                    System.out.println("Directory is deleted : "
+                            + file.getAbsolutePath());
+                }
+            }
+
+        }else{
+            //if file, then delete it
+            file.delete();
+            System.out.println("File is deleted : " + file.getAbsolutePath());
+        }
     }
 }

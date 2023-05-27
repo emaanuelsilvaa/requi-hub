@@ -53,6 +53,7 @@ public class AuthenticationService {
                     .token(jwtToken)
                     .email(request.getEmail())
                     .userId(usermod.get().getId().toString())
+                    .profilePhoto(usermod.get().getProfilePhoto())
                     .build();
         }else
         throw new ResponseStatusException(

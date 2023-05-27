@@ -40,7 +40,7 @@ public class CatalogModel implements Serializable {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER )
+    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER, optional=true )
     @JoinColumn(name = "attachment_id", referencedColumnName = "ID")
     private AttachmentModel attachment;
 
@@ -48,21 +48,22 @@ public class CatalogModel implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private UserModel author;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     @JoinColumn(name = "categoryType_id", referencedColumnName = "ID")
     private CatalogCategoryTypeModel categoryType;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", orphanRemoval=true)
     private Set<CatalogEvaluationModel> catalogEvaluationModels;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     @JoinColumn(name = "representationType_id", referencedColumnName = "ID")
     private CatalogRepresentationTypeModel representationTypeModel;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", orphanRemoval=true)
     private Set<CatalogTagsSubjectModel> subjectTags;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", orphanRemoval=true)
     private Set<CatalogCommentsModel> commentsModels;
+
 
 }

@@ -37,10 +37,9 @@ public class CatalogController {
         return this.catalog.updateCatalog(catalogModel);
     }
 
-    @PostMapping("/delete")
-    public Optional<CatalogModel> deleteCatalogByAuthor(@RequestBody CatalogModel catalogModel){
-        this.catalog.deleteCatalog(catalogModel);
-        return Optional.of(catalogModel);
+    @DeleteMapping("/delete")
+    public Optional<CatalogModel> deleteCatalogByAuthor(@RequestParam(value = "id", required = false) Long catalogId){
+        return this.catalog.deleteCatalog(catalogId);
     }
 
     @GetMapping("/find/id/{id}")
