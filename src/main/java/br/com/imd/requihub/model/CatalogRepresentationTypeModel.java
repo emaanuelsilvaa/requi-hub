@@ -24,8 +24,7 @@ public class CatalogRepresentationTypeModel {
 
     private String type;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "representationTypeModel", cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "representationTypeModel")
     @JsonIgnore
     private Set<CatalogModel> catalogModels;
 }

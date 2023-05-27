@@ -25,8 +25,7 @@ public class CatalogCategoryTypeModel {
 
     String type;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryType", cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryType")
     @JsonIgnore
     private Set<CatalogModel> catalogModel;
 }

@@ -48,14 +48,14 @@ public class CatalogModel implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private UserModel author;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "categoryType_id", referencedColumnName = "ID")
     private CatalogCategoryTypeModel categoryType;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalogModel", orphanRemoval=true)
     private Set<CatalogEvaluationModel> catalogEvaluationModels;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "representationType_id", referencedColumnName = "ID")
     private CatalogRepresentationTypeModel representationTypeModel;
 
