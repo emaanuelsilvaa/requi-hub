@@ -17,7 +17,9 @@ public interface ICatalog {
 
     Page<CatalogModel> getAllCatalogs(Pageable pageable);
 
-    Page<CatalogModel> getCatalogsByAuthor(final Long author);
+    Page<CatalogModel> getCatalogsByAuthor(final Long author, Pageable pageable);
+
+    Page<CatalogModel> getCatalogsByFilter(final String title, String categoryType, String representationType,  Pageable pageable);
 
     Optional<Catalog> findCatalogById(final Long id);
 }

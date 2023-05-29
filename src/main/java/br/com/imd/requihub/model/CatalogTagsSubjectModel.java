@@ -1,5 +1,6 @@
 package br.com.imd.requihub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +25,9 @@ public class CatalogTagsSubjectModel {
 
     private String catalogOrigin;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "catalogModel_id", referencedColumnName = "ID")
+    @JsonIgnore
     private CatalogModel catalogModel;
 
 }

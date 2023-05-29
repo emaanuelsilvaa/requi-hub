@@ -25,6 +25,16 @@ public class CatalogController {
     public ResponseEntity<Page<CatalogModel>> getAllCatalogs(Pageable pageable){
         return ResponseEntity.ok(this.catalog.getAllCatalogs(pageable));
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<CatalogModel>> getCatalogsByFilter(
+            @RequestParam(value = "title", required = true) String title,
+            @RequestParam(value = "categoryType", required = true) String categoryType,
+            @RequestParam(value = "representationType", required = true) String representationType,
+            Pageable pageable){
+        return ResponseEntity.ok(this.catalog.getCatalogsByFilter(title,categoryType,representationType,pageable));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Optional<CatalogModel>> createCatalog(@RequestBody CatalogModel catalogModel){
 
@@ -48,8 +58,8 @@ public class CatalogController {
     }
 
     @GetMapping("/find/by/author")
-    public ResponseEntity<Page<CatalogModel>> findCatalogByAuthor(@RequestParam(value = "id", required = false) Long author){
-        return ResponseEntity.ok(this.catalog.getCatalogsByAuthor(author));
+    public ResponseEntity<Page<CatalogModel>> findCatalogByAuthor(@RequestParam(value = "userId", required = false) Long author, Pageable pageable){
+        return ResponseEntity.ok(this.catalog.getCatalogsByAuthor(author, pageable));
     }
 
     @GetMapping("/find/{representationType}")

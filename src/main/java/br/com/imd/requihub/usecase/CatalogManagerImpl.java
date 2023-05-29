@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
@@ -40,6 +43,7 @@ public class CatalogManagerImpl implements ICatalog {
 
     private static final String catalogPath = "C:/CatalogFiles";
 
+    @Transactional
     @Override
     public Optional<CatalogModel> createNewCatalog(CatalogModel catalogModel) {
 
@@ -49,15 +53,19 @@ public class CatalogManagerImpl implements ICatalog {
         String email = authentication.getName();
         final Optional<UserModel> author = userRepository.findByEmail(email);
 
+        /* set creation time */
+        catalogModel.setCreationTime(ZonedDateTime.now(ZoneOffset.UTC));
+
+
         /* find category type */
         final Optional<CatalogCategoryTypeModel> categoryTypeModel = catalogCategoryTypeRepository.findByType(catalogModel.getCategoryType().getType());
         /* find representation type */
         final Optional<CatalogRepresentationTypeModel> representationTypeModel = catalogRepresentationTypeRepository.findByType(catalogModel.getRepresentationTypeModel().getType());
 
-        /* Initial Attachment*/
+        /* Initial and set Attachment*/
         catalogModel.setAttachment(catalogModel.getAttachment());
-        /* find tags */
-        catalogModel.setCategoryType(categoryTypeModel.get());
+
+        /* set category type */
 
         catalogModel.setRepresentationTypeModel(representationTypeModel.get());
 
@@ -121,13 +129,26 @@ public class CatalogManagerImpl implements ICatalog {
 
     @Override
     public Page<CatalogModel> getAllCatalogs(Pageable pageable) {
-        return catalogRepository.findAll(pageable);
+        final Page<CatalogModel> catalogModels = catalogRepository.findAll(pageable);
+        catalogModels.forEach(catalogModel -> {
+            File file = new File((catalogModel.getAttachment().getThumbnailLink()));
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = null;
+            try {
+                resource = new ByteArrayResource(Files.readAllBytes(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
+            catalogModel.getAttachment().setThumbnailLink(thumbBase64);
+        });
+        return catalogModels;
     }
 
 
     @Override
-    public Page<CatalogModel> getCatalogsByAuthor(Long author) {
-        final List<CatalogModel> catalogModels = catalogRepository.findAllByAuthorId(author);
+    public Page<CatalogModel> getCatalogsByAuthor(Long author, Pageable pageable) {
+        final Page<CatalogModel> catalogModels = catalogRepository.findAllByAuthorId(author, pageable);
 
         catalogModels.forEach(catalogModel -> {
             File file = new File((catalogModel.getAttachment().getThumbnailLink()));
@@ -141,13 +162,33 @@ public class CatalogManagerImpl implements ICatalog {
             final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
             catalogModel.getAttachment().setThumbnailLink(thumbBase64);
         });
-        return new PageImpl<>(catalogModels);
+        return catalogModels;
     }
+
+    @Override
+    public Page<CatalogModel> getCatalogsByFilter(String title, String categoryType, String representationType, Pageable pageable) {
+        final Page<CatalogModel> catalogModels = catalogRepository.findByFilter(title,categoryType,representationType,pageable);
+
+        catalogModels.forEach(catalogModel -> {
+            File file = new File((catalogModel.getAttachment().getThumbnailLink()));
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = null;
+            try {
+                resource = new ByteArrayResource(Files.readAllBytes(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
+            catalogModel.getAttachment().setThumbnailLink(thumbBase64);
+        });
+
+        return catalogModels;
+    }
+
 
     @Override
     public Optional<Catalog> findCatalogById(Long id) {
         final Optional<CatalogModel> catalogModel =  catalogRepository.findById(id);
-
         try{
             if (catalogModel.isPresent()){
 
@@ -190,9 +231,9 @@ public class CatalogManagerImpl implements ICatalog {
                         HttpStatus.UNPROCESSABLE_ENTITY, "Error");
             }
         }catch (Exception exception){
-
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Error");
         }
-        return Optional.of(Catalog.builder().build());
     }
 
     public static void delete(File file)

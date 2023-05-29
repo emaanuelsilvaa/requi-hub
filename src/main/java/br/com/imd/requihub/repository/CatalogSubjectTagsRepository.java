@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 @EnableJpaRepositories
 public interface CatalogSubjectTagsRepository extends JpaRepository<CatalogTagsSubjectModel, Long> {
+
 }
