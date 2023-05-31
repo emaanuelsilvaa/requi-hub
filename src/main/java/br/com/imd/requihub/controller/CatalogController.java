@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,11 +29,13 @@ public class CatalogController {
 
     @GetMapping("/filter")
     public ResponseEntity<Page<CatalogModel>> getCatalogsByFilter(
+            @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "title", required = true) String title,
             @RequestParam(value = "categoryType", required = true) String categoryType,
             @RequestParam(value = "representationType", required = true) String representationType,
+            @RequestParam(value = "subjectTags", required = true) List<String> subjectTags,
             Pageable pageable){
-        return ResponseEntity.ok(this.catalog.getCatalogsByFilter(title,categoryType,representationType,pageable));
+        return ResponseEntity.ok(this.catalog.getCatalogsByFilter(userId,title,categoryType,representationType, subjectTags,pageable));
     }
 
     @PostMapping("/create")

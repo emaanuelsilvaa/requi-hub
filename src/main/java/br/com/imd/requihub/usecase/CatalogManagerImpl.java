@@ -3,26 +3,28 @@ package br.com.imd.requihub.usecase;
 import br.com.imd.requihub.entity.Attachment;
 import br.com.imd.requihub.entity.Author;
 import br.com.imd.requihub.entity.Catalog;
-import br.com.imd.requihub.model.*;
+import br.com.imd.requihub.model.CatalogCategoryTypeModel;
+import br.com.imd.requihub.model.CatalogModel;
+import br.com.imd.requihub.model.CatalogRepresentationTypeModel;
+import br.com.imd.requihub.model.UserModel;
 import br.com.imd.requihub.repository.*;
 import br.com.imd.requihub.usecase.interfaces.ICatalog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -166,23 +168,69 @@ public class CatalogManagerImpl implements ICatalog {
     }
 
     @Override
-    public Page<CatalogModel> getCatalogsByFilter(String title, String categoryType, String representationType, Pageable pageable) {
-        final Page<CatalogModel> catalogModels = catalogRepository.findByFilter(title,categoryType,representationType,pageable);
+    public Page<CatalogModel> getCatalogsByFilter(String userId, String title, String categoryType, String representationType, List<String> subjectTags, Pageable pageable) {
 
-        catalogModels.forEach(catalogModel -> {
-            File file = new File((catalogModel.getAttachment().getThumbnailLink()));
-            Path path = Paths.get(file.getAbsolutePath());
-            ByteArrayResource resource = null;
-            try {
-                resource = new ByteArrayResource(Files.readAllBytes(path));
-            } catch (IOException e) {
-                e.printStackTrace();
+        if(subjectTags.size() == 0){
+
+            final Page<CatalogModel> catalogModels = catalogRepository.findByFilterNoTags(userId,
+                    title,categoryType,representationType
+                    ,pageable);
+
+            catalogModels.forEach(catalogModel -> {
+                File file = new File((catalogModel.getAttachment().getThumbnailLink()));
+                Path path = Paths.get(file.getAbsolutePath());
+                ByteArrayResource resource = null;
+                try {
+                    resource = new ByteArrayResource(Files.readAllBytes(path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
+                catalogModel.getAttachment().setThumbnailLink(thumbBase64);
+            });
+
+            return catalogModels;
+
+        }else{
+            if (subjectTags.size() > 5 ){
+                throw new ResponseStatusException(
+                        HttpStatus.UNPROCESSABLE_ENTITY, "Error");
             }
-            final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
-            catalogModel.getAttachment().setThumbnailLink(thumbBase64);
-        });
 
-        return catalogModels;
+            final List<String> tags = new ArrayList<>();
+
+            for (int i = 0 ; i< 5 ; i++){
+                tags.add(new String(""));
+            }
+            final int[] i = {0};
+            subjectTags.forEach(s -> {
+
+                tags.set(i[0],s);
+                i[0]++;
+            });
+
+            final Page<CatalogModel> catalogModels = catalogRepository.findByFilter(userId,
+                    title,categoryType,representationType,
+                    tags.get(0),tags.get(1),tags.get(2),tags.get(3),tags.get(4)
+                     ,pageable);
+
+            catalogModels.forEach(catalogModel -> {
+                File file = new File((catalogModel.getAttachment().getThumbnailLink()));
+                Path path = Paths.get(file.getAbsolutePath());
+                ByteArrayResource resource = null;
+                try {
+                    resource = new ByteArrayResource(Files.readAllBytes(path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                final String thumbBase64 = new String(Base64.getEncoder().encode(resource.getByteArray()));
+                catalogModel.getAttachment().setThumbnailLink(thumbBase64);
+            });
+
+            return catalogModels;
+
+        }
+
     }
 
 

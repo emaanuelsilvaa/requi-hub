@@ -23,8 +23,14 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        final Optional<UserModel> userModel1 = userRepository.findByEmail(request.getEmail());
+        if (userModel1.isPresent()){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Email ja Cadastrado");
+        }
         final UserModel userModel = UserModel.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
