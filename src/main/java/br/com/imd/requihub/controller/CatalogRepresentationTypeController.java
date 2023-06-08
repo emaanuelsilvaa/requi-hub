@@ -28,9 +28,8 @@ public class CatalogRepresentationTypeController {
         return this.catalogRepresentationType.createNewCatalogRepresentationType(catalogRepresentationTypeModel);
     }
 
-    @PostMapping("/delete")
-    public Optional<CatalogRepresentationTypeModel> deleteCatalogByAuthor(@RequestBody CatalogRepresentationTypeModel catalogRepresentationTypeModel){
-        this.catalogRepresentationType.deleteCatalogRepresentationType(catalogRepresentationTypeModel);
-        return Optional.of(catalogRepresentationTypeModel);
+    @DeleteMapping("/delete")
+    public Optional<CatalogRepresentationTypeModel> deleteRepresentation(@RequestParam(value = "id", required = false) Long representationId){
+        return this.catalogRepresentationType.deleteCatalogRepresentationType(representationId);
     }
 }

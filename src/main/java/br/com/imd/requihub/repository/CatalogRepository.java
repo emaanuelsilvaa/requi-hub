@@ -19,6 +19,8 @@ public interface CatalogRepository extends JpaRepository<CatalogModel, Long> {
 
     Page<CatalogModel> findAllByAuthorId(Long id, Pageable pageable);
 
+    Page<CatalogModel> findAllByRepresentationTypeModelId(Long id, Pageable pageable);
+
     @Query(value = "SELECT * FROM t_catalog tc  " +
             "join users u on tc.author_id = u.id and u.email ilike %:userId% " +
             "join t_catalog_category_type tcct on tc.category_type_id = tcct.id and tcct.type ilike %:categoryType% " +

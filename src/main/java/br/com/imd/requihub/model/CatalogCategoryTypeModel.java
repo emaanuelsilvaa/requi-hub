@@ -25,6 +25,12 @@ public class CatalogCategoryTypeModel {
 
     String type;
 
+    private Boolean isDefault;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST )
+    @JoinColumn(name = "owner_id", referencedColumnName = "ID")
+    private UserModel ownerCategory;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryType")
     @JsonIgnore
     private Set<CatalogModel> catalogModel;

@@ -1,6 +1,7 @@
 package br.com.imd.requihub.model;
 
 import br.com.imd.requihub.security.Role;
+import br.com.imd.requihub.usecase.CatalogCategoryTypeImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -50,10 +51,16 @@ public class UserModel implements UserDetails {
     @JsonIgnore
     private Set<CatalogModel> catalogModels;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner",cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JsonIgnore
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private CatalogRepresentationTypeModel useRepresentationTypeModel;
+    private Set<CatalogRepresentationTypeModel> useRepresentationTypeModel;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ownerCategory",cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore
+    private Set<CatalogCategoryTypeModel> catalogCategoryTypeModel;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

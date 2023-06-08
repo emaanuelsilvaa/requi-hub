@@ -26,7 +26,8 @@ public class CatalogRepresentationTypeModel {
 
     private Boolean isDefault;
 
-    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER, optional=true )
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST )
     @JoinColumn(name = "owner_id", referencedColumnName = "ID")
     private UserModel owner;
 

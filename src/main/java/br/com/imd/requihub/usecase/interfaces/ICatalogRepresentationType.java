@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ICatalogRepresentationType {
     Optional<CatalogRepresentationTypeModel> createNewCatalogRepresentationType(final CatalogRepresentationTypeModel catalogRepresentationTypeModel);
 
-    Optional<CatalogRepresentationTypeModel> deleteCatalogRepresentationType(final CatalogRepresentationTypeModel catalogRepresentationTypeModel);
+    Optional<CatalogRepresentationTypeModel> deleteCatalogRepresentationType(final Long representationId);
 
     Page<CatalogRepresentationTypeModel> getAllCatalogsRepresentationTypes(Pageable pageable);
 }
