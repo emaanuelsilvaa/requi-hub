@@ -37,6 +37,8 @@ public class CatalogModel implements Serializable {
     @Column(nullable = false)
     private String description;
 
+    private String bibliographicReference;
+
     @Column(nullable = false)
     private Boolean enabled = true;
 
@@ -48,7 +50,7 @@ public class CatalogModel implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private UserModel author;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "categoryType_id", referencedColumnName = "ID")
     private CatalogCategoryTypeModel categoryType;
 

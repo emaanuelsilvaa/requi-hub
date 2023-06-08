@@ -29,12 +29,33 @@ public class AuthenticationService {
         final Optional<UserModel> userModel1 = userRepository.findByEmail(request.getEmail());
         if (userModel1.isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.UNPROCESSABLE_ENTITY, "Email ja Cadastrado");
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Email informado ja está Cadastrado ! ");
+        }
+        if(request.getPassword().length() < 7){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "A senha deve conter no minimo 7 caracteres");
+        }
+        if(request.getEmail().length() < 100 && !request.getEmail().contains("@")){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Digite um email valido");
+        }
+        if(request.getFirstName().length() < 100 ){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Primeiro nome muito longo");
+        }
+        if(request.getLastName().length() < 100 ){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Ultimo nome muito longo");
+        }
+        if(request.getSobre().length() < 1000 ){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Conteudo sobre muito longo");
         }
         final UserModel userModel = UserModel.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
+                .about(request.getSobre())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();

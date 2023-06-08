@@ -2,6 +2,7 @@ package br.com.imd.requihub.model;
 
 import br.com.imd.requihub.security.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -48,6 +49,11 @@ public class UserModel implements UserDetails {
             orphanRemoval = true)
     @JsonIgnore
     private Set<CatalogModel> catalogModels;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private CatalogRepresentationTypeModel useRepresentationTypeModel;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

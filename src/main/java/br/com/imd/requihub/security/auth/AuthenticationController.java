@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v1/public/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 

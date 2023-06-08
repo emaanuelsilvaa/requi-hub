@@ -35,6 +35,8 @@ public class Catalog {
 
     private Author author;
 
+    private String bibliographicReference;
+
     private CatalogCategoryTypeModel categoryType;
 
     private Set<CatalogEvaluationModel> catalogEvaluationModels;

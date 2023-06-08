@@ -24,6 +24,12 @@ public class CatalogRepresentationTypeModel {
 
     private String type;
 
+    private Boolean isDefault;
+
+    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.EAGER, optional=true )
+    @JoinColumn(name = "owner_id", referencedColumnName = "ID")
+    private UserModel owner;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "representationTypeModel")
     @JsonIgnore
     private Set<CatalogModel> catalogModels;

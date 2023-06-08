@@ -61,15 +61,23 @@ public class CatalogManagerImpl implements ICatalog {
 
         /* find category type */
         final Optional<CatalogCategoryTypeModel> categoryTypeModel = catalogCategoryTypeRepository.findByType(catalogModel.getCategoryType().getType());
+        if(!categoryTypeModel.isPresent()){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Categoria invalida");
+        }
         /* find representation type */
         final Optional<CatalogRepresentationTypeModel> representationTypeModel = catalogRepresentationTypeRepository.findByType(catalogModel.getRepresentationTypeModel().getType());
+        if(!representationTypeModel.isPresent()){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "tipo de representação invalida");
+        }
+
+        catalogModel.setCategoryType(categoryTypeModel.get());
+
+        catalogModel.setRepresentationTypeModel(representationTypeModel.get());
 
         /* Initial and set Attachment*/
         catalogModel.setAttachment(catalogModel.getAttachment());
-
-        /* set category type */
-
-        catalogModel.setRepresentationTypeModel(representationTypeModel.get());
 
         catalogModel.setEnabled(true);
 
@@ -271,6 +279,7 @@ public class CatalogManagerImpl implements ICatalog {
                         .categoryType(catalogModel.get().getCategoryType())
                         .representationTypeModel(catalogModel.get().getRepresentationTypeModel())
                         .subjectTags(catalogModel.get().getSubjectTags())
+                        .bibliographicReference(catalogModel.get().getBibliographicReference())
                         .build();
                 return Optional.of(catalog);
             }
