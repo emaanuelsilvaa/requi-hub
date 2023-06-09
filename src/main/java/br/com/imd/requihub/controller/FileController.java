@@ -25,8 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/file")
 public class FileController {
-    private static final String path = "C:/CatalogFiles/";
-    private final CatalogManagerImpl catalogManager;
+
     private final CatalogRepository catalogRepository;
 
     private final UploadDownloadImpl uploadDownload;

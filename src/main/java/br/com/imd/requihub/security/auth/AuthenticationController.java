@@ -46,11 +46,16 @@ public class AuthenticationController {
     public void forgotPassword(@RequestBody PasswordResetInput input){
         Optional<UserModel> optionalUserModel = userRepository.findByEmail(input.getEmail());
 
+        if (!optionalUserModel.isPresent()){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Email nao Encontrado");
+        }
         optionalUserModel.ifPresent(userModel -> {
             String token = userPasswordService.generateToken(userModel);
             // enviar email email
             emailSenderService.sendEmail(userModel.getEmail(),"RECUPERAÇAO DE SENHA"
-            , "Olá segue o link para redefiniçao de senha: " + token);
+            , "Olá segue o link para redefiniçao de senha: " +
+                            "http://localhost:3000/mudar-senha?token="+ token);
             System.out.println(token);
         });
 
