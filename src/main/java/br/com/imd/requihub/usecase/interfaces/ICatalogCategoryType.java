@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ICatalogCategoryType {
     Optional<CatalogCategoryTypeModel> createNewCatalogType(final CatalogCategoryTypeModel catalogCategoryTypeModel);
 
-    Optional<CatalogCategoryTypeModel> deleteCatalogType(final CatalogCategoryTypeModel catalogCategoryTypeModel);
+    Optional<CatalogCategoryTypeModel> deleteCategoryType(final Long categoryId);
 
     Page<CatalogCategoryTypeModel> getAllCatalogsTypes(Pageable pageable);
 }

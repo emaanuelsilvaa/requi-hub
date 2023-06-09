@@ -28,10 +28,10 @@ public class CatalogCategoryTypeController {
         return this.catalogCategoryType.createNewCatalogType(catalogCategoryTypeModel);
     }
 
-    @PostMapping("/delete")
-    public Optional<CatalogCategoryTypeModel> deleteCatalogByAuthor(@RequestBody CatalogCategoryTypeModel catalogCategoryTypeModel){
-        this.catalogCategoryType.deleteCatalogType(catalogCategoryTypeModel);
-        return Optional.of(catalogCategoryTypeModel);
+    @DeleteMapping("/delete")
+    public Optional<CatalogCategoryTypeModel> deleteCategory(@RequestParam(value = "id", required = false) Long categoryId){
+
+        return this.catalogCategoryType.deleteCategoryType(categoryId);
     }
 
 }

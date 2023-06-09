@@ -18,6 +18,8 @@ import java.util.Optional;
 public interface CatalogRepresentationTypeRepository extends JpaRepository<CatalogRepresentationTypeModel, Long> {
     Optional<CatalogRepresentationTypeModel> findByType(String type);
 
+    Optional<CatalogRepresentationTypeModel> findByTypeAndOwnerId(String type, long id);
+
     @Query(value = "SELECT DISTINCT tcrt.type, tcrt.id, tcrt.is_default, tcrt.owner_id  from t_catalog_representation_type tcrt " +
             "join users u on tcrt.owner_id = :userId or tcrt.is_default = true " +
             "where tcrt.\"type\" ilike '%%' ", nativeQuery=true )

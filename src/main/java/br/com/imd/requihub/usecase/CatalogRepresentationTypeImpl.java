@@ -36,7 +36,7 @@ public class CatalogRepresentationTypeImpl implements ICatalogRepresentationType
         String email = authentication.getName();
         final Optional<UserModel> author = userRepository.findByEmail(email);
 
-        if(catalogRepresentationTypeRepository.findByType(catalogRepresentationTypeModel.getType()).isPresent()){
+        if(catalogRepresentationTypeRepository.findByTypeAndOwnerId(catalogRepresentationTypeModel.getType(),author.get().getId()).isPresent()){
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Essa representação ja está cadastrada");
         }

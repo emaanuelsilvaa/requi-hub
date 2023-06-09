@@ -1,8 +1,10 @@
 package br.com.imd.requihub.usecase;
 
 import br.com.imd.requihub.model.CatalogCategoryTypeModel;
+import br.com.imd.requihub.model.CatalogModel;
 import br.com.imd.requihub.model.UserModel;
 import br.com.imd.requihub.repository.CatalogCategoryTypeRepository;
+import br.com.imd.requihub.repository.CatalogRepository;
 import br.com.imd.requihub.repository.UserRepository;
 import br.com.imd.requihub.usecase.interfaces.ICatalogCategoryType;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class CatalogCategoryTypeImpl implements ICatalogCategoryType {
     private final CatalogCategoryTypeRepository catalogCategoryTypeRepository;
 
     private final UserRepository userRepository;
+    private final CatalogRepository catalogRepository;
 
     @Override
     public Optional<CatalogCategoryTypeModel> createNewCatalogType(CatalogCategoryTypeModel catalogCategoryTypeModel) {
@@ -30,8 +33,16 @@ public class CatalogCategoryTypeImpl implements ICatalogCategoryType {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         final Optional<UserModel> author = userRepository.findByEmail(email);
+
+        if(catalogCategoryTypeRepository.findByTypeAndOwnerCategoryId(catalogCategoryTypeModel.getType(),author.get().getId()).isPresent()
+        || catalogCategoryTypeRepository.findByTypeAndIsDefault(catalogCategoryTypeModel.getType(),true).isPresent()){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Essa representação ja está cadastrada");
+        }
+
         if(author.isPresent()){
             catalogCategoryTypeModel.setOwnerCategory(author.get());
+            catalogCategoryTypeModel.setIsDefault(false);
             return Optional.of(catalogCategoryTypeRepository.save(catalogCategoryTypeModel));
         }else{
             throw new ResponseStatusException(
@@ -40,9 +51,22 @@ public class CatalogCategoryTypeImpl implements ICatalogCategoryType {
     }
 
     @Override
-    public Optional<CatalogCategoryTypeModel> deleteCatalogType(CatalogCategoryTypeModel catalogCategoryTypeModel) {
-        catalogCategoryTypeRepository.delete(catalogCategoryTypeModel);
-        return Optional.of(catalogCategoryTypeModel);
+    public Optional<CatalogCategoryTypeModel> deleteCategoryType(final Long categoryId) {
+
+        Optional<CatalogCategoryTypeModel> category = catalogCategoryTypeRepository.findById(categoryId);
+
+        Page<CatalogModel> catalogs = catalogRepository.findAllByCategoryTypeId(category.get().getId(), Pageable.unpaged());
+
+
+        if(catalogs.getContent().size() == 0){
+            catalogCategoryTypeRepository.delete(category.get());
+            return category;
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "Não é possivel excluir categoria. pois existe algum catalogo associado a essa categoria");
+        }
+
     }
 
     @Override
