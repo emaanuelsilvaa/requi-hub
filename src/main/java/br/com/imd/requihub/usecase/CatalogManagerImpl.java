@@ -176,12 +176,12 @@ public class CatalogManagerImpl implements ICatalog {
     }
 
     @Override
-    public Page<CatalogModel> getCatalogsByFilter(String userId, String title, String categoryType, String representationType, List<String> subjectTags, Pageable pageable) {
+    public Page<CatalogModel> getCatalogsByFilter(String userId, String title,String bibliographicReference, String categoryType, String representationType, List<String> subjectTags, Pageable pageable) {
 
         if(subjectTags.size() == 0){
 
             final Page<CatalogModel> catalogModels = catalogRepository.findByFilterNoTags(userId,
-                    title,categoryType,representationType
+                    title, bibliographicReference, categoryType, representationType
                     ,pageable);
 
             catalogModels.forEach(catalogModel -> {

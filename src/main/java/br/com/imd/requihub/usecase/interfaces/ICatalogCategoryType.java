@@ -13,4 +13,6 @@ public interface ICatalogCategoryType {
     Optional<CatalogCategoryTypeModel> deleteCategoryType(final Long categoryId);
 
     Page<CatalogCategoryTypeModel> getAllCatalogsTypes(Pageable pageable);
+
+    Page<CatalogCategoryTypeModel> getAllDefaultCatalogsTypes();
 }

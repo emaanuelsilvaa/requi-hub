@@ -20,7 +20,7 @@ public interface ICatalog {
 
     Page<CatalogModel> getCatalogsByAuthor(final Long author, Pageable pageable);
 
-    Page<CatalogModel> getCatalogsByFilter(String userId, String title, String categoryType, String representationType, List<String> subjectTags, Pageable pageable);
+    Page<CatalogModel> getCatalogsByFilter(String userId, String title, String bibliographicReference, String categoryType, String representationType, List<String> subjectTags, Pageable pageable);
 
     Optional<Catalog> findCatalogById(final Long id);
 }

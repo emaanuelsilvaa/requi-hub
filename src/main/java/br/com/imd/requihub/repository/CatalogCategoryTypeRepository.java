@@ -22,6 +22,8 @@ public interface CatalogCategoryTypeRepository extends JpaRepository<CatalogCate
 
     Optional<CatalogCategoryTypeModel> findByTypeAndOwnerCategoryId(String type, long id);
 
+    Page<CatalogCategoryTypeModel> findAllByIsDefault(boolean isDefault, Pageable pageable);
+
     @Query(value = "SELECT DISTINCT tcrt.type, tcrt.id, tcrt.is_default, tcrt.owner_id  from t_catalog_category_type tcrt " +
             "join users u on tcrt.owner_id = :userId or tcrt.is_default = true " +
             "where tcrt.\"type\" ilike '%%' ", nativeQuery=true )

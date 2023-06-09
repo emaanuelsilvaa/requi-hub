@@ -13,4 +13,6 @@ public interface ICatalogRepresentationType {
     Optional<CatalogRepresentationTypeModel> deleteCatalogRepresentationType(final Long representationId);
 
     Page<CatalogRepresentationTypeModel> getAllCatalogsRepresentationTypes(Pageable pageable);
+
+    Page<CatalogRepresentationTypeModel> getAllDefaultsRepresentationTypes();
 }

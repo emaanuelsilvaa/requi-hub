@@ -46,9 +46,10 @@ public interface CatalogRepository extends JpaRepository<CatalogModel, Long> {
             "join users u on tc.author_id = u.id and u.email ilike %:userId% " +
             "join t_catalog_category_type tcct on tc.category_type_id = tcct.id and tcct.type ilike %:categoryType% " +
             "join t_catalog_representation_type tcrt on tc.representation_type_id = tcrt.id and tcrt.type ilike %:representationType% " +
-            "WHERE tc.title ilike %:title%", nativeQuery=true)
+            "WHERE tc.title ilike %:title% and tc.bibliographic_reference ilike %:bibliographicReference% ", nativeQuery=true)
     Page<CatalogModel> findByFilterNoTags(@Param("userId") String userId,
                                           @Param("title") String title,
+                                          @Param("bibliographicReference") String bibliographicReference,
                                           @Param("categoryType") String categoryType,
                                           @Param("representationType") String representationType,
                                           Pageable pageable);

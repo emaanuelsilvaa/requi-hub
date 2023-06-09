@@ -83,4 +83,9 @@ public class CatalogCategoryTypeImpl implements ICatalogCategoryType {
                     HttpStatus.UNPROCESSABLE_ENTITY, "Author not found");
         }
     }
+
+    @Override
+    public Page<CatalogCategoryTypeModel> getAllDefaultCatalogsTypes() {
+        return catalogCategoryTypeRepository.findAllByIsDefault(true, Pageable.unpaged());
+    }
 }

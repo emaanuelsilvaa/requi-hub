@@ -31,11 +31,12 @@ public class CatalogController {
     public ResponseEntity<Page<CatalogModel>> getCatalogsByFilter(
             @RequestParam(value = "userId", required = true) String userId,
             @RequestParam(value = "title", required = true) String title,
+            @RequestParam(value = "bibliographicReference", required = true) String bibliographicReference,
             @RequestParam(value = "categoryType", required = true) String categoryType,
             @RequestParam(value = "representationType", required = true) String representationType,
             @RequestParam(value = "subjectTags", required = true) List<String> subjectTags,
             Pageable pageable){
-        return ResponseEntity.ok(this.catalog.getCatalogsByFilter(userId,title,categoryType,representationType, subjectTags,pageable));
+        return ResponseEntity.ok(this.catalog.getCatalogsByFilter(userId,title,bibliographicReference,categoryType,representationType, subjectTags,pageable));
     }
 
     @PostMapping("/create")

@@ -82,4 +82,10 @@ public class CatalogRepresentationTypeImpl implements ICatalogRepresentationType
                     HttpStatus.UNPROCESSABLE_ENTITY, "Author not found");
         }
     }
+
+    @Override
+    public Page<CatalogRepresentationTypeModel> getAllDefaultsRepresentationTypes() {
+        return catalogRepresentationTypeRepository.findAllByIsDefault(true, Pageable.unpaged());
+
+    }
 }
