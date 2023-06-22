@@ -28,7 +28,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UploadDownloadImpl {
-    private static final String path = "C:/CatalogFiles";
+    private static final String path = "/CatalogFiles";
 
     @Autowired
     private final HttpServletRequest request;

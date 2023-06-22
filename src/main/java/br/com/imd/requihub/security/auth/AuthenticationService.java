@@ -35,19 +35,19 @@ public class AuthenticationService {
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "A senha deve conter no minimo 7 caracteres");
         }
-        if(request.getEmail().length() < 100 && !request.getEmail().contains("@")){
+        if(request.getEmail().length() > 100 && !request.getEmail().contains("@")){
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Digite um email valido");
         }
-        if(request.getFirstName().length() < 100 ){
+        if(request.getFirstName().length() > 100 ){
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Primeiro nome muito longo");
         }
-        if(request.getLastName().length() < 100 ){
+        if(request.getLastName().length() > 100 ){
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Ultimo nome muito longo");
         }
-        if(request.getSobre().length() < 1000 ){
+        if(request.getSobre().length() > 1000 ){
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Conteudo sobre muito longo");
         }
@@ -67,12 +67,18 @@ public class AuthenticationService {
     }
     @Transactional
     public AuthenticationResponse authenticate(RegisterRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception exception){
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY, "user not found");
+        }
+
         Optional<UserModel> usermod = repository.findByEmail(request.getEmail());
         if (usermod.isPresent()){
             String jwtToken = jwtService.generateToken(usermod.get());
