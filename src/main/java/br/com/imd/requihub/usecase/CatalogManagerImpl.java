@@ -43,7 +43,7 @@ public class CatalogManagerImpl implements ICatalog {
 
     private final CatalogCategoryTypeRepository catalogCategoryTypeRepository;
 
-    private static final String catalogPath = "C:/CatalogFiles";
+    private static final String catalogPath = "/CatalogFiles";
 
     @Transactional
     @Override
