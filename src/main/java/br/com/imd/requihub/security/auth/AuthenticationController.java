@@ -55,7 +55,7 @@ public class AuthenticationController {
             // enviar email email
             emailSenderService.sendEmail(userModel.getEmail(),"RECUPERAÇAO DE SENHA"
             , "Olá segue o link para redefiniçao de senha: " +
-                            "http://localhost:3000/mudar-senha?token="+ token);
+                            "https://requihub.com.br/mudar-senha?token="+ token);
             System.out.println(token);
         });
 
